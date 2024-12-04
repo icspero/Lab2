@@ -477,16 +477,20 @@ int main()
             patternArray.MPUSHfromString(pattern);
             cout << endl;
             TestPatternMatch(strArray, patternArray);
-            /*
-            TestPatternMatch("meow@stud.nstu.ru", "*@*.n?tu.*");
-            TestPatternMatch("hello", "h?lo");
-            TestPatternMatch("world", "w*rld");
-            TestPatternMatch("example", "ex*ple");
-            TestPatternMatch("test", "t*st");
-            TestPatternMatch("test", "t?st");
-            */
         }
-        /*
+        else if (numberTask == "5"){
+            Tree tree;
+            int value;
+            cout << endl;
+            cout << "Enter numbers to insert into tree (enter -1 to complete): ";
+            while (cin >> value) {
+                if (value == -1) {
+                    break; // Завершаем цикл, если встречен -1
+                }
+                tree.Insert(value); // Вставляем только валидные значения
+            }
+            cout << "Tree height: " << tree.TreeHeight() << endl;
+        }
         else if (numberTask == "6") {
             string elements;
             string strA;
@@ -497,7 +501,7 @@ int main()
                 cout << endl << "They are isomorphic!" << endl;
             }
             else {
-                cout << endl << "They are NOT isomorphic!" << endl;
+                cout << endl << "They are not isomorphic!" << endl;
             }
         }
         else if (numberTask == "exit") {
@@ -507,6 +511,5 @@ int main()
             cout << endl << "Incorrect input!" << endl;
             continue;
         }
-        */
     }
 }
