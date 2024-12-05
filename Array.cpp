@@ -73,3 +73,41 @@ void Array::MPUSHfromString(const string& value) {
         MPUSHend(s); // Добавляем символ как строку
     }
 }
+
+bool MatchPattern(Array& strArray, Array& patternArray, int sIndex = 0, int pIndex = 0) {
+    // Если оба индекса дошли до конца, совпадение
+    if (sIndex == strArray.MSIZE() && pIndex == patternArray.MSIZE()) {
+        return true;
+    }
+
+    // Если шаблон исчерпан, но строка еще есть, нет совпадения
+    if (pIndex == patternArray.MSIZE()) {
+        return false;
+    }
+
+    // Если текущий символ шаблона '*'
+    if (patternArray.MGETL(pIndex) == "*") {
+        // Проверяем две возможности:
+        // 1. '*' соответствует пустой последовательности
+        // 2. '*' соответствует одному или более символам строки
+        return MatchPattern(strArray, patternArray, sIndex, pIndex + 1) || 
+               (sIndex < strArray.MSIZE() && MatchPattern(strArray, patternArray, sIndex + 1, pIndex));
+    }
+
+    // Если текущий символ шаблона '?' или совпадает с символом строки
+    if (sIndex < strArray.MSIZE() && 
+        (patternArray.MGETL(pIndex) == "?" || patternArray.MGETL(pIndex) == strArray.MGETL(sIndex))) {
+        return MatchPattern(strArray, patternArray, sIndex + 1, pIndex + 1);
+    }
+
+    // В остальных случаях совпадения нет
+    return false;
+}
+
+void TestPatternMatch(Array& strArray, Array& patternArray) {
+    if (MatchPattern(strArray, patternArray)) {
+        cout << "The string matches the pattern!" << endl;
+    } else {
+        cout << "The string does not match the pattern!" << endl;
+    }
+}

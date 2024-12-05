@@ -109,5 +109,10 @@ struct Array {
     void MREAD();
 };
 
+bool MatchPattern(Array& strArray, Array& patternArray, int sIndex, int pIndex);
+void TestPatternMatch(Array& strArray, Array& patternArray);
+SetNode* SetUnion(const SetNode& set1, const SetNode& set2);
+SetNode* SetIntersection(const SetNode& set1, const SetNode& set2);
+SetNode* SetDifference(const SetNode& set1, const SetNode& set2);
 void ProcessingExpression(const string& oper, Stack& stackOper, Stack& stackNumb, string current, bool parameter);
 bool isIsomorphic(string& A,string& B);

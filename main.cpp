@@ -6,89 +6,6 @@
 
 using namespace std;
 
-bool MatchPattern(Array& strArray, Array& patternArray, int sIndex = 0, int pIndex = 0) {
-    // Если оба индекса дошли до конца, совпадение
-    if (sIndex == strArray.MSIZE() && pIndex == patternArray.MSIZE()) {
-        return true;
-    }
-
-    // Если шаблон исчерпан, но строка еще есть, нет совпадения
-    if (pIndex == patternArray.MSIZE()) {
-        return false;
-    }
-
-    // Если текущий символ шаблона '*'
-    if (patternArray.MGETL(pIndex) == "*") {
-        // Проверяем две возможности:
-        // 1. '*' соответствует пустой последовательности
-        // 2. '*' соответствует одному или более символам строки
-        return MatchPattern(strArray, patternArray, sIndex, pIndex + 1) || 
-               (sIndex < strArray.MSIZE() && MatchPattern(strArray, patternArray, sIndex + 1, pIndex));
-    }
-
-    // Если текущий символ шаблона '?' или совпадает с символом строки
-    if (sIndex < strArray.MSIZE() && 
-        (patternArray.MGETL(pIndex) == "?" || patternArray.MGETL(pIndex) == strArray.MGETL(sIndex))) {
-        return MatchPattern(strArray, patternArray, sIndex + 1, pIndex + 1);
-    }
-
-    // В остальных случаях совпадения нет
-    return false;
-}
-
-void TestPatternMatch(Array& strArray, Array& patternArray) {
-    if (MatchPattern(strArray, patternArray)) {
-        cout << "The string matches the pattern!" << endl;
-    } else {
-        cout << "The string does not match the pattern!" << endl;
-    }
-}
-
-
-SetNode* SetUnion(const SetNode& set1, const SetNode& set2) {
-    SetNode* result = new SetNode(set1.size + set2.size); // Создаем множество с достаточным размером
-    
-    for (int i = 0; i < set1.size; i++) {
-        if (set1.plenty[i] != nullptr) {
-            result->SETADD(set1.plenty[i]->value);
-        }
-    }
-    for (int i = 0; i < set2.size; i++) {
-        if (set2.plenty[i] != nullptr) {
-            result->SETADD(set2.plenty[i]->value);
-        }
-    }
-    return result;
-}
-
-SetNode* SetIntersection(const SetNode& set1, const SetNode& set2) {
-    SetNode* result = new SetNode(std::min(set1.size, set2.size)); // Максимально возможный размер пересечения
-    
-    for (int i = 0; i < set1.size; i++) {
-        if (set1.plenty[i] != nullptr) {
-            int dummy;
-            if (set2.FindValue(set1.plenty[i]->value, dummy)) { // Если элемент есть в обоих множествах
-                result->SETADD(set1.plenty[i]->value);
-            }
-        }
-    }
-    return result;
-}
-
-SetNode* SetDifference(const SetNode& set1, const SetNode& set2) {
-    SetNode* result = new SetNode(set1.size); // Максимально возможный размер разности - размер первого множества
-    
-    for (int i = 0; i < set1.size; i++) {
-        if (set1.plenty[i] != nullptr) {
-            int dummy;
-            if (!set2.FindValue(set1.plenty[i]->value, dummy)) { // Элемента нет во втором множестве
-                result->SETADD(set1.plenty[i]->value);
-            }
-        }
-    }
-    return result;
-}
-
 int main()
 {  
     while (true) {
@@ -485,9 +402,9 @@ int main()
             cout << "Enter numbers to insert into tree (enter -1 to complete): ";
             while (cin >> value) {
                 if (value == -1) {
-                    break; // Завершаем цикл, если встречен -1
+                    break;
                 }
-                tree.Insert(value); // Вставляем только валидные значения
+                tree.Insert(value);
             }
             cout << "Tree height: " << tree.TreeHeight() << endl;
         }

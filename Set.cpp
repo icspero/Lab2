@@ -131,3 +131,47 @@ void SetNode::SET_AT(string value) {
     }
     
 }
+
+SetNode* SetUnion(const SetNode& set1, const SetNode& set2) {
+    SetNode* result = new SetNode(set1.size + set2.size); // Создаем множество с достаточным размером
+    
+    for (int i = 0; i < set1.size; i++) {
+        if (set1.plenty[i] != nullptr) {
+            result->SETADD(set1.plenty[i]->value);
+        }
+    }
+    for (int i = 0; i < set2.size; i++) {
+        if (set2.plenty[i] != nullptr) {
+            result->SETADD(set2.plenty[i]->value);
+        }
+    }
+    return result;
+}
+
+SetNode* SetIntersection(const SetNode& set1, const SetNode& set2) {
+    SetNode* result = new SetNode(std::min(set1.size, set2.size)); // Максимально возможный размер пересечения
+    
+    for (int i = 0; i < set1.size; i++) {
+        if (set1.plenty[i] != nullptr) {
+            int dummy;
+            if (set2.FindValue(set1.plenty[i]->value, dummy)) { // Если элемент есть в обоих множествах
+                result->SETADD(set1.plenty[i]->value);
+            }
+        }
+    }
+    return result;
+}
+
+SetNode* SetDifference(const SetNode& set1, const SetNode& set2) {
+    SetNode* result = new SetNode(set1.size); // Максимально возможный размер разности - размер первого множества
+    
+    for (int i = 0; i < set1.size; i++) {
+        if (set1.plenty[i] != nullptr) {
+            int dummy;
+            if (!set2.FindValue(set1.plenty[i]->value, dummy)) { // Элемента нет во втором множестве
+                result->SETADD(set1.plenty[i]->value);
+            }
+        }
+    }
+    return result;
+}
